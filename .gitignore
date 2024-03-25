@@ -1,5 +1,23 @@
+# for lab1
 lab1/*
 !lab1/*.py
+
+# for lab2
 lab2/*
-!lab2/mazemod
-lab2/mazemod/.vscode
+!lab2/mazemod/*.c
+!lab2/mazemod/*.h
+!lab2/mazemod/makefile
+
+# for lab3
+# originalMaze used for get GOT relative Addr
+lab3/*
+!lab3/*.c
+!lab3/*.h
+!lab3/*.txt
+!lab3/makefile
+!lab3/originalMaze
+
+# others
+*.tar.gz
+*.tbz
+unix_prog/
