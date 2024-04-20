@@ -17,6 +17,14 @@ lab3/*
 !lab3/makefile
 !lab3/originalMaze
 
+# for hw1
+hw1/*
+!hw1/*.c
+!hw1/*.h
+!hw1/makefile
+!hw1/*.txt
+!hw1/ex*
+
 # others
 *.tar.gz
 *.tbz
