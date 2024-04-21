@@ -498,7 +498,7 @@ FILE *fopen(const char *filename, const char *mode)
     {
         char* filenameStr = transformString(filename, 1);
         char* modeStr = transformString(mode, 1);
-        fprintf(outputStream, "[logger] fopen:(%s, %s) = %p\n", filenameStr, modeStr, (void *)ret);
+        fprintf(outputStream, "[logger] fopen:(%s, %s) = 0x%llx\n", filenameStr, modeStr, (void *)ret);
         free(filenameStr);
         free(modeStr);
     }
