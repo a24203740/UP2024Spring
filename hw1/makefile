@@ -9,7 +9,7 @@ RM = rm -f   # rm command
 
 .PHONY: all clean
 
-all: liblogger.so
+all: liblogger.so logger
 
 liblogger.so: liblogger.o
 	$(CC) $(LDFLAGS) $^ -o $@
@@ -17,5 +17,8 @@ liblogger.so: liblogger.o
 liblogger.o: liblogger.c
 	$(CC) $(CFLAGS) $<
 
+logger: logger.c
+	$(CC) $< -o $@
+
 clean:
-	$(RM) *.o *.so maze
+	$(RM) *.o *.so
