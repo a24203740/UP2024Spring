@@ -481,10 +481,9 @@ FILE *fopen(const char *filename, const char *mode)
 {
     changeToProgramDir();
     setOutputStream(stderr);
-    if (org_fopen == NULL)
-    {
-        getFunctionInStdio();
-    }
+    
+    getFunctionInStdio();
+    
     FILE* ret;
     if(checkFilenameInBlacklist(filename, "open"))
     {
@@ -513,10 +512,9 @@ size_t fwrite(const void *ptr, size_t size, size_t count, FILE *stream)
 
     changeToProgramDir();
     setOutputStream(stderr);
-    if (org_fwrite == NULL)
-    {
-        getFunctionInStdio();
-    }
+    
+    getFunctionInStdio();
+    
     size_t ret;
     if(checkFilenameInBlacklist(filename, "write"))
     {
@@ -550,16 +548,14 @@ size_t fread(void *ptr, size_t size, size_t count, FILE *stream)
     changeToProgramDir();
     setOutputStream(stderr);
 
-    if (org_fread == NULL)
-    {
-        getFunctionInStdio();
-    }
+    
+    getFunctionInStdio();
+    
     char* readContent = (char*)malloc(size*count+1);
     long int offset = ftell(stream);
     size_t myRet = org_fread(readContent, size, count, stream);
     size_t ret;
-    readContent[size*count] = '\0';
-
+    readContent[size*myRet] = '\0';
     // TODO: check if readContent contain any substring that is in blacklist
     if(checkPatternInBlacklist(readContent, "read", 0))
     {
@@ -569,11 +565,10 @@ size_t fread(void *ptr, size_t size, size_t count, FILE *stream)
     }
     else
     {
-        char* readStr = transformString(readContent, 0);
-        org_fwrite(readStr, size, count, logfile);
-        free(readStr);
+        // char* readStr = transformString(readContent, 0);
+        org_fwrite(readContent, size, myRet, logfile);
 
-        memcpy(ptr, readContent, size*count); // copy the content to the original ptr
+        memcpy(ptr, readContent, size*myRet); // copy the content to the original ptr
         ret = myRet;
     }
 
@@ -586,10 +581,9 @@ int connect(int sockfd, const struct sockaddr *addr, socklen_t addrlen)
     changeToProgramDir();
     setOutputStream(stderr);
 
-    if(org_connect == NULL)
-    {
-        getFunctionInStdio();
-    }
+    
+    getFunctionInStdio();
+    
     int ret;
     char* ip = inet_ntoa(((struct sockaddr_in *)addr)->sin_addr);
     if(checkPatternInBlacklist(ip, "connect", 1))
@@ -609,10 +603,7 @@ int getaddrinfo(const char *node, const char *service, const struct addrinfo *hi
     changeToProgramDir();
     setOutputStream(stderr);
 
-    if(org_getaddrinfo == NULL)
-    {
-        getFunctionInStdio();
-    }
+    getFunctionInStdio();
     int ret;
     if(checkPatternInBlacklist(node, "getaddrinfo", 1) )
     {
@@ -637,10 +628,7 @@ int system(const char *command)
     changeToProgramDir();
     setOutputStream(stderr);
 
-    if(org_system == NULL)
-    {
-        getFunctionInStdio();
-    }
+    getFunctionInStdio();
     int ret = org_system(command);
     {
         char* commandStr = transformString(command, 1);

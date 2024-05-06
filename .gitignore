@@ -28,4 +28,5 @@ hw1/*
 # others
 *.tar.gz
 *.tbz
+*.zip
 unix_prog/

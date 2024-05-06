@@ -10,6 +10,8 @@ RM = rm -f   # rm command
 .PHONY: all clean
 
 all: liblogger.so logger
+	cp liblogger.so ../hw1_hiddencase
+	cp logger ../hw1_hiddencase
 
 liblogger.so: liblogger.o
 	$(CC) $(LDFLAGS) $^ -o $@
