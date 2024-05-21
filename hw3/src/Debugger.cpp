@@ -259,6 +259,22 @@ void Debugger::patchMemory(uint64_t p_address, uint64_t p_data)
 
 }
 
+void Debugger::showBreakpointsInfo()
+{
+    if(breakpoints.empty())
+    {
+        std::cout << "** no breakpoints." << std::endl;
+        return;
+    }
+    std::vector<std::pair<uint64_t, uint64_t>> breakpointsInfo;
+    for(auto it = breakpoints.begin(); it != breakpoints.end(); it++)
+    {
+        breakpointsInfo.push_back(std::make_pair(it->second.second, it->first));
+    }
+    std::sort(breakpointsInfo.begin(), breakpointsInfo.end());
+    tui::printBreakpoint(breakpointsInfo);
+}
+
 cs_insn Debugger::getInstruction(uint64_t p_address)
 {
     char buffer[16];

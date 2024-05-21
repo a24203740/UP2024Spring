@@ -3,12 +3,20 @@
 /* ptrace(enum __ptrace_request request, pid_t pid, void *addr, void *data) */
 
 ProgramLoader::ProgramLoader(const char* p_program) {
+    pid = 0;
+    progIsValid = false;
     setProgram(p_program);
 }
 
 void ProgramLoader::setProgram(const char* p_program) {
     program = p_program;
     progIsValid = util::checkFileExistence(program);
+}
+
+ProgramLoader::~ProgramLoader() {
+    if(progIsLoaded) {
+        unload();
+    }
 }
 
 bool ProgramLoader::isProcessAlive() {

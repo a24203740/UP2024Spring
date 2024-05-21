@@ -13,9 +13,9 @@
 
 class ProgramLoader {
     public:
-        ProgramLoader() = default;
+        ProgramLoader() : program(nullptr), pid(0), progIsValid(false), progIsLoaded(false) {};
         ProgramLoader(const char* p_program);
-        ~ProgramLoader() = default;
+        ~ProgramLoader();
         void setProgram(const char* p_program);
         int load();
         void unload();
@@ -24,8 +24,8 @@ class ProgramLoader {
     private:
         const char* program;
         pid_t pid;
-        bool progIsValid{false};
-        bool progIsLoaded{false};
+        bool progIsValid;
+        bool progIsLoaded;
         bool isProcessAlive();
 
 };

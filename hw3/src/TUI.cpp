@@ -53,3 +53,14 @@ void tui::printInstruction(cs_insn p_instruction, uint64_t start)
     std::cout << std::setw(10) << std::setfill(' ') << std::left << p_instruction.op_str;
     std::cout << std::right << std::endl;
 }
+
+void tui::printBreakpoint(std::vector<std::pair<uint64_t, uint64_t>> p_breakpoints)
+{
+    std::cout << std::left;
+    std::cout << std::setw(8) << std::setfill(' ') << "Num" << "Address" << std::endl;
+    for(size_t i = 0; i < p_breakpoints.size(); i++)
+    {
+        std::cout << std::setw(8) << std::setfill(' ') << p_breakpoints[i].first << "0x" << std::hex << p_breakpoints[i].second << std::endl;
+    }
+    std::cout << std::right;
+}
