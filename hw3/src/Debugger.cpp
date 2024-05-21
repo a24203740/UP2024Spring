@@ -13,8 +13,11 @@ Debugger::Debugger()
 
 void Debugger::loadProgram(const char* p_program)
 {
-    breakPointCount = 0;
     isLoad = false;
+    hitBreakpoint = false;
+    hitBreakpointAddress = 0;
+    breakPointCount = 0;
+    breakpoints.clear();
     elfParser.parse(p_program);
     if(!elfParser.isValid()) {
         std::cerr << "Invalid ELF file" << std::endl;
@@ -212,7 +215,6 @@ void Debugger::setBreakpoint(uint64_t p_address, bool p_addToMap)
     {
         breakpoints[p_address] = std::make_pair(originalData, breakPointCount);
         breakPointCount++;
-        std::cout << "** set a breakpoint at 0x" << std::hex << p_address << std::dec << std::endl;
     }
 }
 void Debugger::removeBreakpoint(uint64_t p_address, bool p_removeFromMap)
@@ -294,6 +296,18 @@ cs_insn Debugger::getInstruction(uint64_t p_address)
     return result;
 }
 
+int64_t Debugger::findBreakpointAddrByIndex(uint64_t p_index)
+{
+    for(auto it = breakpoints.begin(); it != breakpoints.end(); it++)
+    {
+        if(it->second.second == p_index)
+        {
+            return it->first;
+        }
+    }
+    return -1;
+}
+
 void Debugger::run()
 {
     if(isLoad)
@@ -350,6 +364,7 @@ void Debugger::run()
                 std::string address = userInput.substr(6);
                 uint64_t breakpointAddress = std::stoull(address, nullptr, 16);
                 setBreakpoint(breakpointAddress);
+                std::cout << "** set a breakpoint at 0x" << std::hex << address << std::dec << std::endl;
             }
             else
             {
@@ -366,7 +381,44 @@ void Debugger::run()
             {
                 std::cout << "** please load a program first." << std::endl;
             }
-        
+        }
+        else if(userInput == "info break")
+        {
+            if(isLoad)
+            {
+                showBreakpointsInfo();
+            }
+            else
+            {
+                std::cout << "** please load a program first." << std::endl;
+            }
+        }
+        else if(userInput.find("delete ") == 0) // prefix is "delete "
+        {
+            if(isLoad)
+            {
+                std::string index = userInput.substr(7);
+                uint64_t breakpointIndex = std::stoull(index, nullptr, 10);
+                int64_t breakpointAddress = findBreakpointAddrByIndex(breakpointIndex);
+                if(breakpointAddress != -1)
+                {
+                    removeBreakpoint((uint64_t)breakpointAddress);
+                    std::cout << "** delete breakpoint " << breakpointIndex << "." << std::endl;
+                    if((uint64_t)breakpointAddress == hitBreakpointAddress)
+                    {
+                        hitBreakpoint = false;
+                        hitBreakpointAddress = 0;
+                    }
+                }
+                else
+                {
+                    std::cout << "** breakpoint " << index << " does not exist." << std::endl;
+                }
+            }
+            else
+            {
+                std::cout << "** please load a program first." << std::endl;
+            }
         }
         else
         {

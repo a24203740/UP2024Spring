@@ -33,8 +33,9 @@ class Debugger {
         void hitBreakpointHandler(bool p_beforeInstruction = false);
         void patchMemory(uint64_t p_address, uint64_t p_data);
         void showBreakpointsInfo();
+        int64_t findBreakpointAddrByIndex(uint64_t p_index);
         cs_insn getInstruction(uint64_t p_address);
-        std::map<uint64_t, std::pair<uint64_t, uint64_t>> breakpoints{}; // address -> original data, index
+        std::map<uint64_t, std::pair<uint64_t, uint64_t>> breakpoints; // address -> original data, index
         Disassembler disassembler;
         ProgramLoader programLoader;
         ELFparser elfParser;
