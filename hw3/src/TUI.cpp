@@ -2,7 +2,10 @@
 
 void tui::printWithPrompt(const std::string& p_message)
 {
-    std::cout << p_message << std::endl;
+    if(!p_message.empty())
+    {
+        std::cout << p_message << std::endl;
+    }
     std::cout << "(sdb) ";
 }
 void tui::printFill(char c, size_t count)
@@ -44,13 +47,13 @@ void tui::printRegisters(const user_regs_struct& p_regs)
 
 void tui::printInstruction(cs_insn p_instruction, uint64_t start)
 {
-    std::cout << std::setw(12) << std::setfill(' ') << std::hex << p_instruction.address + start << ": ";
+    std::cout << std::setw(12) << std::setfill(' ') << std::hex << p_instruction.address << ": ";
     for(size_t i = 0; i < p_instruction.size; i++) {
         std::cout << std::hex << std::setw(2) << std::setfill('0') << (int)p_instruction.bytes[i] << " ";
     }
     printFill(' ', 32 - p_instruction.size * 3);
-    std::cout << std::dec << '\t' << p_instruction.mnemonic;
-    std::cout << std::setw(10) << std::setfill(' ') << std::left << p_instruction.op_str;
+    std::cout << std::dec << '\t' << std::setw(10) << std::setfill(' ') << std::left << p_instruction.mnemonic;
+    std::cout << p_instruction.op_str;
     std::cout << std::right << std::endl;
 }
 

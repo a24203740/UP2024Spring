@@ -3,7 +3,7 @@ CFLAGS = -Wall -lcapstone -I../
 
 SRC= $(wildcard *.cpp)
 OBJ= $(SRC:.cpp=.o)
-main: $(OBJ)
+sdb: $(OBJ)
 
 %.o: %.cpp
 	$(CC) $< $(CFLAGS) -c -o $@

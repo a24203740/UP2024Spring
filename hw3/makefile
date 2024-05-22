@@ -6,7 +6,7 @@ SRCDIR = ./src
 SRC= $(wildcard ./src/*.cpp)
 OBJ= $(SRC:.cpp=.o)
 
-all: makeSRC main
+all: makeSRC sdb
 
 makeSRC:
 	$(MAKE) -C $(SRCDIR)
@@ -14,11 +14,11 @@ makeSRC:
 %.o: %.cpp
 	$(CC) $< $(LDLIBS) $(CFLAGS) -c  -o $@
 
-main: main.o $(OBJ)
+sdb: main.o $(OBJ)
 	$(CC) $^ $(LDLIBS) -o $@
 
 clear:
 	rm -f *.o
-	rm -f main
+	rm -f sdb
 	$(MAKE) -C $(SRCDIR) clear
 

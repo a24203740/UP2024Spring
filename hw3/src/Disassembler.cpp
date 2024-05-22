@@ -18,8 +18,9 @@ Disassembler::~Disassembler() {
     }
 }
 
-size_t Disassembler::disassemble(const uint8_t* p_code, size_t p_codeSize, cs_insn** p_instructions) {
+size_t Disassembler::disassemble(const uint8_t* p_code, size_t p_codeSize, cs_insn** p_instructions
+                                    , uint64_t p_address) {
     size_t count = 0;
-    count = cs_disasm(handle, p_code, p_codeSize, 0, 0, p_instructions);
+    count = cs_disasm(handle, p_code, p_codeSize, p_address, 0, p_instructions);
     return count;
 }

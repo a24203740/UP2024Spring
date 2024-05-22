@@ -1,5 +1,5 @@
 #include "include/ProgramLoader.hpp"
-
+#include <iostream>
 /* ptrace(enum __ptrace_request request, pid_t pid, void *addr, void *data) */
 
 ProgramLoader::ProgramLoader(const char* p_program) {
@@ -63,7 +63,7 @@ int ProgramLoader::load() {
         int status;
         util::checkError(waitpid(pid, &status, 0), "waitpid");
         assert(WIFSTOPPED(status));
-        ptrace(PTRACE_SETOPTIONS, pid, NULL, PTRACE_O_EXITKILL);
+        ptrace(PTRACE_SETOPTIONS, pid, NULL, PTRACE_O_TRACESYSGOOD | PTRACE_O_EXITKILL); // https://www.reddit.com/r/linux/comments/16x32l3/intercepting_and_modifying_linux_system_calls/
     }
     progIsLoaded = true;
     return pid;
