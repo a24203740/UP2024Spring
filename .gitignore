@@ -30,3 +30,4 @@ hw1/*
 *.tbz
 *.zip
 unix_prog/
+!*.md
